@@ -15,14 +15,6 @@
     pip install balderich
     ```
 
-* 或者
-
-    ```bash
-    git clone https://github.com/NSSCTF/balderich-py.git
-    cd balderich-py/
-    python setup.py install
-    ```
-
 * **请注意**：你需要使用Python3.8及以上版本来安装本包。
 
 ## 使用
