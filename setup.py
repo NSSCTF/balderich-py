@@ -23,7 +23,7 @@ setup(
     url='https://github.com/NSSCTF/balderich-py',
     author='Xenny',
     author_email='xennyxd1@gmail.com',
-    packages=find_packages('.'),
+    packages=find_packages('./src'),
     include_package_data=True,
     platforms='any',
     install_requires=read_requirements('requirements.txt'),
