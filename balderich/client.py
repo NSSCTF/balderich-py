@@ -3,7 +3,7 @@ import json
 import hashlib
 import requests
 from typing import Tuple, Union, IO
-from balderich.api import UserCollection
+from balderich.models.user import UserCollection
 from balderich.models.contest import ContestCollection
 from balderich.models.problem import ProblemCollection
 from balderich.models.team import TeamCollection
