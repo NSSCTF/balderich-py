@@ -14,7 +14,7 @@ def read_requirements(filename):
 setup(
     name='balderich',
     python_requires='>=3.8.0',
-    version='1.0',
+    version='1.1',
     keywords='NSSCTF Balderich',
     description='A Python library for the NSSCTF Balderich API',
     long_description=read_file('README.md'),
