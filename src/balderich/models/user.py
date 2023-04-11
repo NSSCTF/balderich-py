@@ -11,6 +11,7 @@ class UserCollection(Collection):
 
         Args:
             name参数可以为用户名或用户UID。
+            
         Returns:
             {
                 uid: integer,
@@ -41,8 +42,10 @@ class UserCollection(Collection):
     def get_user_statistics_active(self, uid: int) -> Dict[str, Any]:
         """
         获取用户解题活跃数据。相同的路径数据缓存60分钟。
+
         Args:
             uid参数为用户UID。
+
         Returns:
             从当年1月1日至当天的每日解题数据。
 
@@ -55,7 +58,7 @@ class UserCollection(Collection):
                 ]
             }
         """
-        code, data = self._get(f'user/{uid}/statistics/active/')
+        code, data = self.client._get(f'user/{uid}/statistics/active/')
 
         if code != SUCCESS:
             raise get_exception(code)
@@ -65,8 +68,10 @@ class UserCollection(Collection):
     def get_user_statistics_solves(self, uid: int) -> List[Any]:
         """
         获取用户解题曲线。相同的路径数据缓存60分钟。
+
         Args:
             uid参数为用户UID。
+
         Returns:
             分类返回用户解题时间时间戳数据。
 
@@ -114,7 +119,7 @@ class UserCollection(Collection):
                 },
             ]
         """
-        code, data = self._get(f'user/{uid}/statistics/solves/')
+        code, data = self.client._get(f'user/{uid}/statistics/solves/')
 
         if code != SUCCESS:
             raise get_exception(code)
@@ -124,8 +129,10 @@ class UserCollection(Collection):
     def get_user_statistics_rating(self, uid: int) -> Dict[str, Any]:
         """
         获取用户积分曲线。相同的路径数据缓存60分钟。
+
         Args:
             uid参数为用户UID。
+
         Returns:
             返回用户参加的每场比赛排名以及积分变动数据。
 
@@ -140,7 +147,7 @@ class UserCollection(Collection):
                 }
             ]
         """
-        code, data = self._get(f'user/{uid}/statistics/rating/')
+        code, data = self.client._get(f'user/{uid}/statistics/rating/')
 
         if code != SUCCESS:
             raise get_exception(code)
@@ -150,8 +157,10 @@ class UserCollection(Collection):
     def get_user_statistics_radar(self, uid: int) -> Dict[str, Any]:
         """
         获取用户能力雷达图数据。相同的路径数据缓存60分钟。
+
         Args:
             uid参数为用户UID。
+
         Returns:
             返回一个列表，包含用户各方向解题数据，其中一共六项，分别代表WEB、PWN、REVERSE、CRYPTO、MISC、OTHER方向解题数据，每项数据都为[解题数, 总题数]的列表
 
@@ -166,7 +175,7 @@ class UserCollection(Collection):
                 }
             ]
         """
-        code, data = self._get(f'user/{uid}/statistics/radar/')
+        code, data = self.client._get(f'user/{uid}/statistics/radar/')
 
         if code != SUCCESS:
             raise get_exception(code)
@@ -176,8 +185,10 @@ class UserCollection(Collection):
     def get_user_article_list(self, uid: int, page: int, size: int) -> Dict[str, Any]:
         """
         获取用户文章列表。相同的路径数据缓存5分钟。
+
         Args:
             uid参数为用户UID。page参数为页数，size参数为每页大小。
+
         Returns:
             返回指定页的文章数据和文章总数，文章数据按照文章ID排降序。
 
@@ -193,7 +204,7 @@ class UserCollection(Collection):
                 total: integer
             }
         """
-        code, data = self._get(f'user/{uid}/article/list/{page}/{size}/')
+        code, data = self.client._get(f'user/{uid}/article/list/{page}/{size}/')
 
         if code != SUCCESS:
             raise get_exception(code)
@@ -203,8 +214,10 @@ class UserCollection(Collection):
     def get_user_following_list(self, uid: int, page: int, size: int) -> Dict[str, Any]:
         """
         获取用户关注列表。相同的路径数据缓存10分钟。
+
         Args:
             uid参数为用户UID。page参数为页数，size参数为每页大小。
+
         Returns:
             返回指定页的关注列表数据，数据按照关注时间排降序。
 
@@ -217,7 +230,7 @@ class UserCollection(Collection):
                 },
             ]
         """
-        code, data = self._get(f'user/{uid}/following/list/{page}/{size}/')
+        code, data = self.client._get(f'user/{uid}/following/list/{page}/{size}/')
 
         if code != SUCCESS:
             raise get_exception(code)
@@ -227,8 +240,10 @@ class UserCollection(Collection):
     def get_user_follower_list(self, uid: int, page: int, size: int) -> Dict[str, Any]:
         """
         获取用户粉丝列表。相同的路径数据缓存10分钟。
+
         Args:
             uid参数为用户UID。page参数为页数，size参数为每页大小。
+
         Returns:
             返回指定页的粉丝列表数据，数据按照关注时间排降序。
 
@@ -241,7 +256,7 @@ class UserCollection(Collection):
                 },
             ]
         """
-        code, data = self._get(f'user/{uid}/follower/list/{page}/{size}/')
+        code, data = self.client._get(f'user/{uid}/follower/list/{page}/{size}/')
 
         if code != SUCCESS:
             raise get_exception(code)
@@ -251,6 +266,7 @@ class UserCollection(Collection):
     def get_user_picturebed_used(self) -> Dict[str, Any]:
         """
         获取图床使用情况。数据缓存10分钟。
+
         Returns:
             返回图床使用情况。
             
@@ -270,8 +286,10 @@ class UserCollection(Collection):
     def get_user_picturebed_used(self, page: int, size: int) -> Dict[str, Any]:
         """
         获取图床列表。数据缓存10分钟。
+        
         Args:
             page参数为页数，size参数为每页大小。
+
         Returns:
             返回指定页的图床列表数据，数据按照id排降序。
 
@@ -288,7 +306,7 @@ class UserCollection(Collection):
                 total: integer
             }
         """
-        code, data = self._get(f'user/picturebed/list/{page}/{size}/')
+        code, data = self.client._get(f'user/picturebed/list/{page}/{size}/')
 
         if code != SUCCESS:
             raise get_exception(code)
@@ -298,9 +316,11 @@ class UserCollection(Collection):
     def post_user_picturebed_upload(self, filename: str, image: IO) -> Dict[str, Any]:
         """
         图床上传图片
+
         Args:
             filename: 文件名
             image: 文件IO流
+
         Returns:
             {
                 id: integer,
@@ -321,8 +341,10 @@ class UserCollection(Collection):
     def post_user_picturebed_download(self, pid: int) -> io.BytesIO:
         """
         图床下载图片
+
         Args:
             pid参数为图片ID。
+
         Returns:
             bytes IO流
         """

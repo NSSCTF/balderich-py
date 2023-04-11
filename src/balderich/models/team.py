@@ -6,9 +6,11 @@ from typing import Any, Dict, List
 class TeamCollection(Collection):
     def get_team_list_by_page(self, page: int, size: int=10) -> Dict[str, Any]:
         """
-        获取团队列表
+        获取团队列表。数据缓存10分钟。
+        
         Args:
             page参数为页数，size参数为每页大小。
+
         Returns:
             {
                 teams: [{
@@ -35,9 +37,11 @@ class TeamCollection(Collection):
     
     def get_team_info(self, tid: int) -> Dict[str, Any]:
         """
-        获取团队详细信息
+        获取团队详细信息。数据缓存10分钟。
+        
         Args:
             tid参数为团队ID。
+
         Returns:
             {
                 id: integer,
@@ -62,7 +66,8 @@ class TeamCollection(Collection):
     
     def get_team_notice(self) -> Dict[str, Any]:
         """
-        获取团队通知信息
+        获取团队通知信息。数据缓存10分钟。
+
         Returns:
             {
                 notice: string
@@ -78,6 +83,7 @@ class TeamCollection(Collection):
     def put_team_clockin(self) -> Dict[str, Any]:
         """
         团队每日打卡
+
         Returns:
             {
                 state: boolean,
@@ -93,9 +99,11 @@ class TeamCollection(Collection):
     
     def get_team_problem_list_by_page(self, page: int, size: int=10) -> Dict[str, Any]:
         """
-        获取团队题目列表
+        获取团队题目列表。数据缓存10分钟。
+
         Args:
             page参数为页数，size参数为每页大小。
+
         Returns:
             {
                 problems: [{
@@ -118,9 +126,11 @@ class TeamCollection(Collection):
     
     def get_team_problem_info(self, pid: int) -> Dict[str, Any]:
         """
-        获取团队题目详细信息
+        获取团队题目详细信息。数据缓存10分钟。
+
         Args:
             pid参数为题目ID。
+            
         Returns:
             {
                 id: interger,
@@ -155,9 +165,11 @@ class TeamCollection(Collection):
     
     def get_team_contest_list_by_page(self, page: int, size: int=10) -> Dict[str, Any]:
         """
-        获取团队比赛列表
+        获取团队比赛列表。数据缓存10分钟。
+
         Args:
             page参数为页数，size参数为每页大小。
+
         Returns:
             其中state的值从[0-2]，分别代表未开始、进行中和已结束。
             {
@@ -185,9 +197,11 @@ class TeamCollection(Collection):
     
     def get_team_contest_info(self, cid: int) -> Dict[str, Any]:
         """
-        获取团队比赛详细信息
+        获取团队比赛详细信息。数据缓存10分钟。
+
         Args:
             cid参数为比赛ID。
+            
         Returns:
             其中level分别为[0-4]代表个人公开赛、个人密码赛、团队公开赛和团队密码赛。
             {
@@ -210,11 +224,13 @@ class TeamCollection(Collection):
 
         return data
     
-    def get_team_contest_rank_list_by_page(self, cid: int, page: int, size: int=10) -> Dict[str, Any]:
+    def get_team_contest_rank_list_by_page(self, cid: int, page: int) -> Dict[str, Any]:
         """
-        获取团队列表
+        获取团队比赛榜单列表。相同的路径数据缓存60秒。
+
         Args:
-            cid参数为比赛ID。相同的路径数据缓存10分钟。page参数为页数，size参数为每页大小。相同的路径数据缓存10分钟。
+            cid参数为比赛ID。page参数为页数。
+
         Returns:
             cetegory为类型列表，包含题目类型字符串，“1”->"10"分别代表WEB->实战。
             point为分数字段，键为题目PID，值为题目当前分数。
@@ -250,9 +266,11 @@ class TeamCollection(Collection):
     
     def get_team_user_list_by_page(self, page: int, size: int=10) -> Dict[str, Any]:
         """
-        获取团队成员列表
+        获取团队成员列表。数据缓存10分钟。
+        
         Args:
             page参数为页数，size参数为每页大小。
+
         Returns:
             返回内容中role为用户角色，其中[0,1,2]分别代表[成员，管理员，队长]
             {
@@ -277,9 +295,11 @@ class TeamCollection(Collection):
     
     def get_team_apply_list_by_page(self, page: int, size: int=10) -> Dict[str, Any]:
         """
-        获取团队申请列表，访问此API需要团队管理员及以上权限。
+        获取团队申请列表，访问此API需要团队管理员及以上权限。数据缓存10分钟。
+
         Args:
             page参数为页数，size参数为每页大小。
+
         Returns:
             {
                 users: [{
@@ -302,9 +322,8 @@ class TeamCollection(Collection):
     
     def get_team_analysis_use(self) -> Dict[str, Any]:
         """
-        获取团队使用情况，访问此API需要团队管理员及以上权限。
-        Args:
-            数据缓存10分钟。
+        获取团队使用情况，访问此API需要团队管理员及以上权限。数据缓存10分钟。
+
         Returns:
             {
                 problem: {
@@ -336,9 +355,11 @@ class TeamCollection(Collection):
     
     def post_team_analysis_solves_curve(self, uids: List[int]) -> Dict[str, Any]:
         """
-        获取团队解题曲线数据，访问此API需要团队管理员及以上权限。
+        获取团队解题曲线数据，访问此API需要团队管理员及以上权限。数据缓存10分钟。
+
         Args:
             uids: [integer, ]
+
         Returns:
             获取最近三月做题时间戳列表
             {
@@ -356,9 +377,11 @@ class TeamCollection(Collection):
     
     def get_team_statistics_day(self, uids: str) -> Dict[str, Any]:
         """
-        获取团队每日解题数据，访问此API需要团队管理员及以上权限。
+        获取团队每日解题数据，访问此API需要团队管理员及以上权限。数据缓存10分钟。
+
         Args:
             uids: [integer, ]
+
         Returns:
             {
                 integer: {

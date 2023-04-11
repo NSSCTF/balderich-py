@@ -7,9 +7,11 @@ from balderich.utils.exceptions import get_exception
 class ProblemCollection(Collection):
     def get_problem_list_by_page(self, page: int, size: int=10) -> Dict[str, Any]:
         """
-        获取题目列表
+        获取题目列表。数据缓存10分钟。
+
         Args:
             page参数为页数，size参数为每页大小。
+
         Returns:
             {
                 problems: [{
@@ -36,9 +38,11 @@ class ProblemCollection(Collection):
 
     def get_problem_info(self, pid: int) -> Dict[str, Any]:
         """
-        获取题目详细信息
+        获取题目详细信息。数据缓存10分钟。
+
         Args:
             pid参数为题目ID。
+
         Returns:
             {
                 id: interger,
@@ -73,9 +77,11 @@ class ProblemCollection(Collection):
 
     def get_problem_sheet_list_by_page(self, page: int, size: int=10) -> Dict[str, Any]:
         """
-        获取题单列表
+        获取题单列表。数据缓存10分钟。
+
         Args:
             page参数为页数，size参数为每页大小。
+
         Returns:
             {
                 sheets: [{
@@ -101,9 +107,11 @@ class ProblemCollection(Collection):
 
     def get_problem_sheet_info(self, psid: int) -> Dict[str, Any]:
         """
-        获取题单详细数据
+        获取题单详细数据。数据缓存10分钟。
+        
         Args:
             psid参数为题单ID。
+
         Returns:
             其中type(0-2)代表题单类型，分别代表（历史比赛、官方精选、用户分享）。
             {
@@ -129,9 +137,11 @@ class ProblemCollection(Collection):
 
     def get_problem_sheet_problem_list_by_page(self, psid: int, page: int, size: int=10) -> Dict[str, Any]:
         """
-        获取题单题目列表
+        获取题单题目列表。数据缓存10分钟。
+
         Args:
             psid参数为题单ID。
+
         Returns:
             其中type(0-2)代表题单类型，分别代表（历史比赛、官方精选、用户分享）。
             {
@@ -147,7 +157,7 @@ class ProblemCollection(Collection):
                 total: integer
             }
         """
-        code, data = self.client._get(f'problem/sheet/{psid}/list/{page}/{size}')
+        code, data = self.client._get(f'problem/sheet/{psid}/list/{page}/{size}/')
         
         if code != SUCCESS:
             raise get_exception(code)
