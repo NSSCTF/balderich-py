@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, List
 from balderich.models.resource import Collection
 from balderich.utils.code import SUCCESS
 from balderich.utils.exceptions import get_exception
@@ -17,14 +17,10 @@ class ProblemCollection(Collection):
                 problems: [{
                     id: integer,
                     title: string,
+                    tag: [string, ],
+                    wp: boolean,
                     point: integer,
-                    tags: [string,],
-                    level: float,
-                    author: {
-                        uid: integer,
-                        name: string,
-                        rating: integer
-                    }
+                    level: float
                 },]
                 total: integer
             }
@@ -69,7 +65,74 @@ class ProblemCollection(Collection):
             }
         """
         code, data = self.client._get(f'problem/{pid}/info/')
-        
+
+        if code != SUCCESS:
+            raise get_exception(code)
+
+        return data
+
+    def get_problem_wp_list_by_page(self, pid: int, page: int, size: int=10) -> Dict[str, Any]:
+        """
+        按页获取题目题解（WP）列表。数据缓存10分钟。
+
+        Args:
+            pid参数为题目ID，page参数为页数，size参数为每页大小，size最大为20。
+
+        Returns:
+            {
+                wps: [{
+                    id: integer,
+                    author: {
+                        uid: integer,
+                        username: string,
+                        rating: integer,
+                        avatar: string,
+                    },
+                    etags: [[string, integer], ],
+                    is_like: boolean,
+                    title: string,
+                    date: integer,
+                    desc: string,
+                    tags: [string, ],
+                    cover: string,
+                    views: integer,
+                    likes: integer,
+                    comments: integer
+                },],
+                total: integer
+            }
+        """
+        code, data = self.client._get(f'problem/{pid}/wp/list/{page}/{size}/')
+
+        if code != SUCCESS:
+            raise get_exception(code)
+
+        return data
+
+    def get_problem_daily_problem(self, date: str) -> List[Dict[str, Any]]:
+        """
+        获取指定日期的每日一题题目。数据缓存约 2 小时。
+
+        Args:
+            date: 日期字符串，格式 YYYY-MM-DD。仅允许当年且不晚于当天（UTC）。
+
+        Returns:
+            题目列表，每项为:
+            {
+                id: integer,
+                title: string,
+                tag: [string, ],
+                wp: boolean,
+                info: {
+                    solved: integer,
+                    wrong: integer,
+                    no: integer
+                },
+                level: float
+            }
+        """
+        code, data = self.client._get(f'problem/daily/{date}/problem/')
+
         if code != SUCCESS:
             raise get_exception(code)
 

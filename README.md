@@ -5,7 +5,7 @@
 [![Stars](https://img.shields.io/github/stars/NSSCTF/balderich-py)](https://github.com/cryptography-wiki/cryptography-wiki.github.io/stargazers)
 ![Size](https://img.shields.io/github/repo-size/NSSCTF/balderich-py)
 
-* [NSSCTF](https://www.ctfer.vip/)平台API Python包，你可以使用此库来和Balderich后端进行快速交互。编写属于你的自动化bot。
+* [NSSCTF](https://www.nssctf.cn/)平台API Python包，你可以使用此库来和Balderich后端进行快速交互。编写属于你的自动化bot。
 
 ## 安装
 

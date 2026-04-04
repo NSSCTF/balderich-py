@@ -2,11 +2,13 @@ import time
 import json
 import hashlib
 import requests
+from functools import cached_property
 from typing import Tuple, Union, IO
 from balderich.models.user import UserCollection
 from balderich.models.contest import ContestCollection
 from balderich.models.problem import ProblemCollection
 from balderich.models.team import TeamCollection
+from balderich.models.notebook import NotebookCollection
 
 class AuthConfig:
     """
@@ -69,26 +71,30 @@ class NSSClient:
         url: str=None
     ) -> None:
         if url is None:
-            url = 'https://www.ctfer.vip/v2/api/'
+            url = 'https://www.nssctf.cn/v2/api/'
         if auth_cofig is None:
             auth_cofig = AuthConfig(key, secret)
         
         self.url = url
         self.auth_config = auth_cofig
 
-    @property
+    @cached_property
     def user(self):
         return UserCollection(client=self)
 
-    @property
+    @cached_property
     def problem(self):
         return ProblemCollection(client=self)
 
-    @property
+    @cached_property
+    def notebook(self):
+        return NotebookCollection(client=self)
+
+    @cached_property
     def contest(self):
         return ContestCollection(client=self)
 
-    @property
+    @cached_property
     def team(self):
         return TeamCollection(client=self)
     
