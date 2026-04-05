@@ -82,6 +82,7 @@ class ProblemCollection(Collection):
             {
                 wps: [{
                     id: integer,
+                    nid: integer,
                     author: {
                         uid: integer,
                         username: string,

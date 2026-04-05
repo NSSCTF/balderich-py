@@ -33,67 +33,50 @@ class TeamProblemPermissionDeniedException(Exception): ...
 class TeamContestNotExistException(Exception): ...
 class TeamContestPermissionDeniedException(Exception): ...
 
+class NotebookArticleNotExistException(Exception): ...
+class NotebookArticlePermissionDeniedException(Exception): ...
+class UnknownApiException(Exception): ...
 
-def get_exception(code: int, msg: str='') -> Exception:
-    if code == AUTH_NONE:
-        return AuthNoneException(msg)
-    elif code == AUTH_NOT_EXIST:
-        return AuthNotExistException(msg)
-    elif code == AUTH_NOT_EXIST:
-        return AuthErrorSignException(msg)
-    elif code == AUTH_ERROR_SIGN:
-        return AuthErrorSignException(msg)
-    elif code == AUTH_TIMEOUT:
-        return AuthTimeoutException(msg)
-    elif code == AUTH_CALC_ERROR:
-        return AuthCalcErrorException(msg)
-    elif code == AUTH_REQUEST_FAST:
-        return AuthRequestFastException(msg)
-    elif code == REQUEST_PARAM_INVALID:
-        return RequestPramInvaildException(msg)
 
-    elif code == USER_NOT_EXIST:
-        return UserNotExistException(msg)
-    elif code == USER_CLOSE_FOLLOW:
-        return UserCloseFollowException(msg)
-    elif code == USER_IMAGE_NONE:
-        return UserImageNoneException(msg)
-    elif code == USER_IMAGE_FORMAT_ERROR:
-        return UserImageFormatErrorException(msg)
-    elif code == USER_IMAGE_OPEN_ERROR:
-        return UserImageOpenErrorException(msg)
-    elif code == USER_MEMORY_NOT_ENOUGH:
-        return UserMemoryNotEnoughException(msg)
-    elif code == USER_IMAGE_NOT_EXIST:
-        return UserImageNotExistException(msg)
-    
-    elif code == PROBLEM_NOT_EXIST:
-        return ProblemNotExistException(msg)
-    elif code == PROBLEM_PEMISSION_DENIED:
-        return ProblemPermissionDeniedException(msg)
-    elif code == PROBLEM_SHEET_NOT_EXIST:
-        return ProblemSheetNotExistException(msg)
-    elif code == PROBLEM_SHEET_PEMISSION_DENIED:
-        return ProblemSheetPermissionDeniedException(msg)
-    
-    elif code == CONTEST_NOT_EXIST:
-        return ContestNotExistException(msg)
-    elif code == CONTEST_PERMISSION_DENIED:
-        return ContestPermissionDeniedException(msg)
-    
-    elif code == TEAM_NOT_EXIST:
-        return TeamNotExistException(msg)
-    elif code == TEAM_PERMISSION_DENIED:
-        return TeamPermissionDeniedException(msg)
-    elif code == TEAM_NO_MEMBER:
-        return TeamNoMemberException(msg)
-    elif code == TEAM_METHOD_PERMISSION_DENIED:
-        return TeamMethodPermissionDeniedException(msg)
-    elif code == TEAM_PROBLEM_NOT_EXIST:
-        return TeamProblemNotExistException(msg)
-    elif code == TEAM_PROBELM_PERMISSION_DENIED:
-        return TeamProblemPermissionDeniedException(msg)
-    elif code == TEAM_CONTEST_NOT_EXIST:
-        return TeamContestNotExistException(msg)
-    elif code == TEAM_CONTEST_PERMISSION_DENIED:
-        return TeamContestPermissionDeniedException(msg)
+_EXCEPTION_MAP = {
+    AUTH_NONE: AuthNoneException,
+    AUTH_NOT_EXIST: AuthNotExistException,
+    AUTH_ERROR_SIGN: AuthErrorSignException,
+    AUTH_TIMEOUT: AuthTimeoutException,
+    AUTH_CALC_ERROR: AuthCalcErrorException,
+    AUTH_REQUEST_FAST: AuthRequestFastException,
+    REQUEST_PARAM_INVALID: RequestPramInvaildException,
+
+    USER_NOT_EXIST: UserNotExistException,
+    USER_CLOSE_FOLLOW: UserCloseFollowException,
+    USER_IMAGE_NONE: UserImageNoneException,
+    USER_IMAGE_FORMAT_ERROR: UserImageFormatErrorException,
+    USER_IMAGE_OPEN_ERROR: UserImageOpenErrorException,
+    USER_MEMORY_NOT_ENOUGH: UserMemoryNotEnoughException,
+    USER_IMAGE_NOT_EXIST: UserImageNotExistException,
+
+    PROBLEM_NOT_EXIST: ProblemNotExistException,
+    PROBLEM_PERMISSION_DENIED: ProblemPermissionDeniedException,
+    PROBLEM_SHEET_NOT_EXIST: ProblemSheetNotExistException,
+    PROBLEM_SHEET_PERMISSION_DENIED: ProblemSheetPermissionDeniedException,
+
+    CONTEST_NOT_EXIST: ContestNotExistException,
+    CONTEST_PERMISSION_DENIED: ContestPermissionDeniedException,
+
+    TEAM_NOT_EXIST: TeamNotExistException,
+    TEAM_PERMISSION_DENIED: TeamPermissionDeniedException,
+    TEAM_NO_MEMBER: TeamNoMemberException,
+    TEAM_METHOD_PERMISSION_DENIED: TeamMethodPermissionDeniedException,
+    TEAM_PROBLEM_NOT_EXIST: TeamProblemNotExistException,
+    TEAM_PROBELM_PERMISSION_DENIED: TeamProblemPermissionDeniedException,
+    TEAM_CONTEST_NOT_EXIST: TeamContestNotExistException,
+    TEAM_CONTEST_PERMISSION_DENIED: TeamContestPermissionDeniedException,
+
+    NOTEBOOK_ARTICLE_NOT_EXIST: NotebookArticleNotExistException,
+    NOTEBOOK_ARTICLE_PERMISSION_DENIED: NotebookArticlePermissionDeniedException,
+}
+
+
+def get_exception(code: int, msg: str = '') -> Exception:
+    exc = _EXCEPTION_MAP.get(code, UnknownApiException)
+    return exc(msg)
