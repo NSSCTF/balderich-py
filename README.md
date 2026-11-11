@@ -41,3 +41,9 @@
     data = client.user.get_user_info(1)
     print(data)
     ```
+
+    获取当前 API Key 所属账号的 UID（整数）
+
+    ```python
+    uid = client.user.get_self_uid()
+    ```

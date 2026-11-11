@@ -5,6 +5,15 @@ from balderich.utils.exceptions import get_exception
 from typing import IO, Any, Dict, List
 
 class UserCollection(Collection):
+    def get_self_uid(self) -> int:
+        """获取当前 API Key 所属账号的 UID。"""
+        code, data = self.client._get('user/info/')
+
+        if code != SUCCESS:
+            raise get_exception(code)
+
+        return data['uid']
+
     def get_user_info(self, name: str) -> Dict[str, Any]:
         """
         获取用户个人信息。相同的路径数据缓存60分钟。
