@@ -7,7 +7,7 @@ from balderich.utils.exceptions import get_exception
 class NotebookCollection(Collection):
     def get_notebook_info(self, nid: int) -> Dict[str, Any]:
         """
-        获取文章信息。数据缓存1小时。
+        获取当前用户可访问的文章信息。
 
         Args:
             nid参数为文章ID。

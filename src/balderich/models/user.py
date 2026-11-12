@@ -2,7 +2,7 @@ import io
 from balderich.models.resource import Collection
 from balderich.utils.code import SUCCESS
 from balderich.utils.exceptions import get_exception
-from typing import IO, Any, Dict, List
+from typing import IO, Any, Dict, List, Optional
 
 class UserCollection(Collection):
     def get_self_uid(self) -> int:
@@ -16,7 +16,7 @@ class UserCollection(Collection):
 
     def get_user_info(self, name: str) -> Dict[str, Any]:
         """
-        获取用户个人信息。相同的路径数据缓存60分钟。
+        获取用户当前公开的个人信息。
 
         Args:
             name参数可以为用户名或用户UID。
@@ -193,7 +193,7 @@ class UserCollection(Collection):
     
     def get_user_article_list(self, uid: int, page: int, size: int) -> Dict[str, Any]:
         """
-        获取用户文章列表。相同的路径数据缓存5分钟。
+        获取用户当前公开的文章列表。
 
         Args:
             uid参数为用户UID。page参数为页数，size参数为每页大小。
@@ -222,7 +222,7 @@ class UserCollection(Collection):
     
     def get_user_following_list(self, uid: int, page: int, size: int) -> Dict[str, Any]:
         """
-        获取用户关注列表。相同的路径数据缓存10分钟。
+        获取本人或已开放的用户关注列表。
 
         Args:
             uid参数为用户UID。page参数为页数，size参数为每页大小。
@@ -272,29 +272,35 @@ class UserCollection(Collection):
 
         return data
     
-    def get_user_picturebed_used(self) -> Dict[str, Any]:
+    def get_user_picturebed_used(self, page: Optional[int] = None, size: Optional[int] = None) -> Dict[str, Any]:
         """
-        获取图床使用情况。数据缓存10分钟。
+        获取当前用户的图床使用情况。
+        兼容旧版调用：同时传入 page 和 size 时返回图片列表。
 
         Returns:
             返回图床使用情况。
             
             {
-                used_mem: integer,
+                used_mem: integer or null,
                 max_mem: integer,
                 total: integer,
             }
         """
-        code, data = self._get(f'user/picturebed/used/')
+        if page is not None or size is not None:
+            if page is None or size is None:
+                raise TypeError('page and size must be provided together for the picturebed list')
+            return self.get_user_picturebed_list(page, size)
+
+        code, data = self.client._get('user/picturebed/used/')
 
         if code != SUCCESS:
             raise get_exception(code)
 
         return data
     
-    def get_user_picturebed_used(self, page: int, size: int) -> Dict[str, Any]:
+    def get_user_picturebed_list(self, page: int, size: int = 10) -> Dict[str, Any]:
         """
-        获取图床列表。数据缓存10分钟。
+        分页获取当前用户的图床列表。
         
         Args:
             page参数为页数，size参数为每页大小。
@@ -309,7 +315,7 @@ class UserCollection(Collection):
                         name: string,
                         date: integer,
                         size: integer,
-                        src: string
+                        url: string
                     }, ...
                 ],
                 total: integer
@@ -359,7 +365,11 @@ class UserCollection(Collection):
         """
         res = self.client._post(f'user/picturebed/{pid}/download/', parse=False)
 
-        if res.headers['Content-Type'] != 'application/octet-stream':
+        content_type = res.headers.get('Content-Type', '').partition(';')[0].strip().lower()
+        if content_type == 'application/json':
             raise get_exception(res.json()['code'])
+        res.raise_for_status()
+        if content_type != 'application/octet-stream' and not content_type.startswith('image/'):
+            raise ValueError(f'Unexpected picturebed download content type: {content_type}')
 
         return io.BytesIO(res.content)

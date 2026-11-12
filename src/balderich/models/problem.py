@@ -5,6 +5,13 @@ from balderich.utils.exceptions import get_exception
 
 
 class ProblemCollection(Collection):
+    def get_problem_states(self, pids: List[int]) -> List[Dict[str, Any]]:
+        """查询本人对 1 至 50 道题的解题及开题状态，按输入顺序去重。"""
+        code, data = self.client._post('problem/statistics/state/', data={'pids': pids})
+        if code != SUCCESS:
+            raise get_exception(code)
+        return data
+
     def get_problem_list_by_page(self, page: int, size: int=10) -> Dict[str, Any]:
         """
         获取题目列表。数据缓存10分钟。
@@ -34,7 +41,7 @@ class ProblemCollection(Collection):
 
     def get_problem_info(self, pid: int) -> Dict[str, Any]:
         """
-        获取题目详细信息。数据缓存10分钟。
+        获取公开题目详细信息。
 
         Args:
             pid参数为题目ID。
@@ -73,7 +80,7 @@ class ProblemCollection(Collection):
 
     def get_problem_wp_list_by_page(self, pid: int, page: int, size: int=10) -> Dict[str, Any]:
         """
-        按页获取题目题解（WP）列表。数据缓存10分钟。
+        分页获取题目题解（WP）列表及当前用户的点赞状态。
 
         Args:
             pid参数为题目ID，page参数为页数，size参数为每页大小，size最大为20。
@@ -141,7 +148,7 @@ class ProblemCollection(Collection):
 
     def get_problem_sheet_list_by_page(self, page: int, size: int=10) -> Dict[str, Any]:
         """
-        获取题单列表。数据缓存10分钟。
+        分页获取公开、非战队题单的目录摘要。
 
         Args:
             page参数为页数，size参数为每页大小。
@@ -171,7 +178,7 @@ class ProblemCollection(Collection):
 
     def get_problem_sheet_info(self, psid: int) -> Dict[str, Any]:
         """
-        获取题单详细数据。数据缓存10分钟。
+        获取当前用户可访问的题单详情。
         
         Args:
             psid参数为题单ID。
@@ -201,7 +208,7 @@ class ProblemCollection(Collection):
 
     def get_problem_sheet_problem_list_by_page(self, psid: int, page: int, size: int=10) -> Dict[str, Any]:
         """
-        获取题单题目列表。数据缓存10分钟。
+        分页获取题单中当前用户可读取的题目。
 
         Args:
             psid参数为题单ID。

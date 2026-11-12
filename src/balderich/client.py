@@ -117,19 +117,16 @@ class NSSClient:
         return code, data
 
     def _post(self, path: str, data: dict=None, files: dict=None, parse: bool=True) -> Union[requests.Response, Tuple[int, Union[int, str, float, bool, list, dict]]]:
-        if data is None:
-            dict = {}
-        
-        if files is None:
-            files = files or {}
-        
         sign, timestamp = self.auth_config.sign(path)
-        res = requests.post(self.url+path, params={
+        params = {
             'key': self.key,
             'time': timestamp,
             'sign': sign
-        }, data=data, files=files)
-        print(res)
+        }
+        if files:
+            res = requests.post(self.url + path, params=params, data=data, files=files)
+        else:
+            res = requests.post(self.url + path, params=params, json=data)
         if not parse:
             return res
         
@@ -141,15 +138,12 @@ class NSSClient:
         return code, data
     
     def _put(self, path: str, data: dict=None) -> Tuple[int, Union[int, str, float, bool, list, dict]]:
-        if data is None:
-            dict = {}
-
         sign, timestamp = self.auth_config.sign(path)
         res = requests.put(self.url+path, params={
             'key': self.key,
             'time': timestamp,
             'sign': sign
-        }, data=data).json()
+        }, json=data).json()
 
         code = res['code']
         data = res['data']

@@ -1,10 +1,17 @@
-from typing import Any, Dict
+from typing import Any, Dict, List
 from balderich.models.resource import Collection
 from balderich.utils.code import SUCCESS
 from balderich.utils.exceptions import get_exception
 
 
 class ContestCollection(Collection):
+    def get_pending_contests(self) -> List[Dict[str, Any]]:
+        """按开始时间获取尚未开始的主站公开赛事，时间戳单位为秒。"""
+        code, data = self.client._get('contest/list/pending/')
+        if code != SUCCESS:
+            raise get_exception(code)
+        return data
+
     def get_contest_list(self, type: int, page: int) -> Dict[str, Any]:
         """
         获取比赛列表。数据缓存10分钟。
@@ -40,7 +47,7 @@ class ContestCollection(Collection):
     
     def get_contest_info(self, cid: int) -> Dict[str, Any]:
         """
-        获取比赛详细信息。数据缓存10分钟。
+        获取当前用户可访问的比赛详细信息。
 
         Args:
             cid: 比赛ID
@@ -70,7 +77,7 @@ class ContestCollection(Collection):
 
     def get_contest_rank_list(self, cid: int, page: int) -> Dict[str, Any]:
         """
-        获取比赛榜单信息。相同路径数据缓存60秒。
+        获取当前用户可访问的比赛榜单。
 
         Args:
             cid: 比赛ID
